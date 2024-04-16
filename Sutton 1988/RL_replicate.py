@@ -2,6 +2,7 @@ import numpy as np
 from alive_progress import alive_it
 import random
 import matplotlib.pyplot as plt
+from collections import Counter
 
 random_seed = 42
 np.random.seed(random_seed)
@@ -55,6 +56,19 @@ def generate_data(batch, batch_size):
 data = generate_data(batch, batch_size)
 
 random.sample(data[0], 3)
+l =[]
+for batch in data:
+    l += [len(s) for s in batch]
+length_distribution = Counter(l)
+
+lengths = list(length_distribution.keys())
+counts = list(length_distribution.values())
+
+plt.bar(lengths, counts, color='skyblue')
+plt.xlabel('sequence length')
+plt.ylabel('number')
+plt.title('The length distribution of sequence data')
+plt.show()
 
 def rms_error(batch, w, P_ideal):
     err = 0
@@ -145,7 +159,7 @@ def plot_rms_error_2(lambdas_2, lrs, data):
     plt.ylabel('ERROR')
     plt.show()
 
-    lambdas_3 = np.linspace(0, 1, 11)
+lambdas_3 = np.linspace(0, 1, 11)
 def plot_rms_error_3(lambdas_3, lrs, data):
     err_list = []
     # choose lr that yields the least error for each lambda
